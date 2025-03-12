@@ -1,11 +1,47 @@
-import { Component } from '@angular/core';
+import { Component, HostListener, OnInit, inject } from '@angular/core';
+import { PokeApiService } from '../../services/poke-api.service';
+import { PokemonCardComponent } from '../../components/pokemon-card/pokemon-card.component';
+import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-pokemon-list',
-  imports: [],
   templateUrl: './pokemon-list.component.html',
-  styleUrl: './pokemon-list.component.scss'
+  styleUrls: ['./pokemon-list.component.scss'],
+  standalone: true,
+  imports: [PokemonCardComponent],
 })
-export class PokemonListComponent {
+export class PokemonListComponent implements OnInit {
+  public pokemons: any[] = [];
+  public isLoading = false;
+  private pokeApiService = inject(PokeApiService);
+  public env = environment;
 
+  ngOnInit(): void {
+    this.loadPokemons(this.pokeApiService.getPokemons());
+  }
+
+  private loadPokemons(pokemonObservable: Observable<any[]>): void {
+    if (this.isLoading) return;
+    this.isLoading = true;
+    pokemonObservable.subscribe({
+      next: (pokemons: any) => {
+        this.pokemons = [...this.pokemons, ...pokemons];
+      },
+      error: () => {
+        console.error('Error loading Pokémon');
+      },
+      complete: () => {
+        this.isLoading = false;
+      },
+    });
+  }
+
+  @HostListener('window:scroll', [])
+  onScroll(): void {
+    if (this.isLoading) return;
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+      this.loadPokemons(this.pokeApiService.loadMorePokemons());
+    }
+  }
 }

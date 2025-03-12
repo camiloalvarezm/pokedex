@@ -1,11 +1,14 @@
-import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-pokemon-card',
-  imports: [],
+  standalone: true,
   templateUrl: './pokemon-card.component.html',
-  styleUrl: './pokemon-card.component.scss'
+  styleUrls: ['./pokemon-card.component.scss'],
+  imports: [CommonModule]
 })
 export class PokemonCardComponent {
-
+  @Input() pokemonName: string = '';
+  @Input() pokemonImgUrl: string = '';
 }

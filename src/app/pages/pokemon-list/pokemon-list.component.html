@@ -1,1 +1,18 @@
-<p>pokemon-list works!</p>
+<div class="flex flex-wrap gap-4 justify-evenly lg:justify-start">
+  @for (pokemon of pokemons; track $index) {
+  <app-pokemon-card
+    [pokemonName]="pokemon.name"
+    [pokemonImgUrl]="env.imgUrl +
+      pokemon.url.split('/')[6] +
+      '.png'
+    "
+  >
+  </app-pokemon-card>
+  }
+</div>
+
+@if (isLoading) {
+<div class="text-center mt-5">
+  <p class="text-lg font-semibold">Cargando...</p>
+</div>
+}
