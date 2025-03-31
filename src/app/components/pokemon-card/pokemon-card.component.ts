@@ -11,4 +11,8 @@ import { Component, Input } from '@angular/core';
 export class PokemonCardComponent {
   @Input() pokemonName: string = '';
   @Input() pokemonImgUrl: string = '';
+
+  onImageError(event: any): void {
+    event.target.src = 'placeholder.png';
+  }
 }

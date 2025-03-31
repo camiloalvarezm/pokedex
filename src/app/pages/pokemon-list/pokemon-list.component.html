@@ -1,10 +1,24 @@
-<div class="flex flex-wrap gap-4 justify-evenly lg:justify-start">
+<div class="flex flex-col items-center justify-center bg-gray-100 p-4">
+  <label for="spriteSelect" class="mb-2 text-lg font-semibold text-gray-700"
+    >Selecciona un tipo de sprite:</label
+  >
+  <select
+    id="spriteSelect"
+    [(ngModel)]="selectedSprite"
+    class="p-2 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+  >
+    @for (sprite of spriteTypes; track $index) {
+    <option [value]="sprite.value" class="p-2">{{ sprite.label }}</option>
+    }
+  </select>
+</div>
+
+<div class="flex flex-wrap gap-4 justify-evenly lg:justify-start mt-3">
   @for (pokemon of pokemons; track $index) {
   <app-pokemon-card
     [pokemonName]="pokemon.name"
-    [pokemonImgUrl]="env.imgUrl +
-      pokemon.url.split('/')[6] +
-      '.png'
+    [pokemonImgUrl]="
+      env.imgUrl + selectedSprite + '/' + pokemon.url.split('/')[6] + '.png'
     "
   >
   </app-pokemon-card>
