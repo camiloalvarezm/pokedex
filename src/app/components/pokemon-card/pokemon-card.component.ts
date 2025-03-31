@@ -11,8 +11,16 @@ import { Component, Input } from '@angular/core';
 export class PokemonCardComponent {
   @Input() pokemonName: string = '';
   @Input() pokemonImgUrl: string = '';
+  public isLoading = true
+
+  onImageLoad() {
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 700);
+  }
 
   onImageError(event: any): void {
+    this.isLoading = false;
     event.target.src = 'placeholder.png';
   }
 }
